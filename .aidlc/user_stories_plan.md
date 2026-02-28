@@ -1,56 +1,53 @@
 # User Stories Plan
 
 ## Overview
-Create user stories for the S3 File-Sharing System based on vision.md requirements.
+Create user stories for the S3 File-Sharing System based on `vision.md` requirements.
 
 ## Deliverables
-- `.aidlc/user_stories.md` - Complete user stories document
+- `.aidlc/user_stories.md` — Complete user stories document covering all personas, features, and acceptance criteria
 
 ## Plan
 
-### Step 1: Define User Personas
-- [x] Document the 4 personas (Admin, Uploader, Reader, Viewer) with their capabilities
+- [x] **Step 1: Define Personas & Permissions Matrix**
+  - Document the 4 personas (Admin, Uploader, Reader, Viewer) and their exact capabilities
+  - Derive permissions from vision.md: who can do what with folders, files, users
 
-### Step 2: Write Authentication & Session User Stories
-- [x] User stories for login/logout
-- [x] User stories for session management
-- [x] User stories for password reset
+- [x] **Step 2: Write Authentication & Session Management Stories**
+  - Login, logout, session handling via DynamoDB
+  - Initial admin account creation during deployment
+  - ✅ **Clarified:** Users can reset their own passwords
 
-### Step 3: Write Admin User Stories
-- [x] User management (create, update, delete users)
-- [x] Folder management (create, update, delete folders)
-- [x] User-folder assignment management (bulk)
-- [x] Initial admin account setup
+- [x] **Step 3: Write Admin — User Management Stories**
+  - Create, update, delete users
+  - Assign roles (Uploader, Reader, Viewer) during creation or update
+  - List all users
 
-### Step 4: Write File/Folder Browsing User Stories
-- [x] Browse folders and files
-- [x] Search by name
-- [x] Sort by name, date uploaded, size
+- [x] **Step 4: Write Admin — Folder Management Stories**
+  - Create, delete folders
+  - ✅ **Clarified:** Nested/hierarchical folders supported
 
-### Step 5: Write Upload User Stories
-- [x] Upload files (Admin, Uploader personas)
-- [x] Pre-signed URL generation
-- [x] 1GB file size limit enforcement
-- [x] File versioning
+- [x] **Step 5: Write Admin — User-Folder Assignment Stories**
+  - Assign/unassign users to folders
+  - Folder assignment during user creation or update (per vision.md)
+  - ✅ **Clarified:** Bulk assignment supported
 
-### Step 6: Write Download User Stories
-- [x] Download files (Admin, Reader personas)
-- [x] Pre-signed URL generation for downloads
-- [x] Download specific version
+- [x] **Step 6: Write File Browsing & Search Stories**
+  - Browse files in assigned folders
+  - Search by file name
+  - Sort by name (alphabetical), date uploaded, file size
 
-### Step 7: Write View-Only User Stories
-- [x] View files without download capability (Viewer persona)
+- [x] **Step 7: Write File Upload Stories**
+  - Upload via S3 pre-signed URLs (Admin, Uploader only)
+  - 1GB max file size enforcement
+  - ✅ **Clarified:** Uploading same name creates a new version (versioning, not overwrite)
 
-### Step 8: Review & Finalize
-- [x] Add audit logging user stories
-- [x] Review all user stories for completeness and consistency
-- [x] Ensure acceptance criteria are testable
-- [x] Get Jason's final approval ✓ (2026-02-28)
+- [x] **Step 8: Write File Download Stories**
+  - Download via S3 pre-signed URLs (Admin, Reader only)
 
-## Clarifications (Answered by Jason)
+- [x] **Step 9: Write View-Only Stories**
+  - Viewer can see file metadata but cannot download or upload
 
-1. **Password Reset**: Users can reset their own passwords
-2. **Folder Hierarchy**: Nested folders supported
-3. **File Versioning**: Track versions (not overwrite)
-4. **Audit Logging**: Yes, log user actions
-5. **Bulk Operations**: Bulk folder assignment supported
+- [x] **Step 10: Review & Finalize**
+  - Review all stories for completeness against vision.md
+  - Ensure acceptance criteria are testable
+  - Get Jason's final approval
