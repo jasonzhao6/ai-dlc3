@@ -100,9 +100,11 @@ def update_user(event, username):
 
     updates = []
     values = {}
+    names = {}
     if 'role' in body and body['role'] in ('uploader', 'reader', 'viewer', 'admin'):
-        updates.append('role = :r')
+        updates.append('#r = :r')
         values[':r'] = body['role']
+        names['#r'] = 'role'
     if 'password' in body and body['password']:
         updates.append('passwordHash = :h')
         values[':h'] = hash_password(body['password'])
@@ -110,11 +112,14 @@ def update_user(event, username):
     if not updates:
         return error('Nothing to update')
 
-    table.update_item(
-        Key={'PK': f'USER#{username}', 'SK': f'USER#{username}'},
-        UpdateExpression='SET ' + ', '.join(updates),
-        ExpressionAttributeValues=values,
-    )
+    update_args = {
+        'Key': {'PK': f'USER#{username}', 'SK': f'USER#{username}'},
+        'UpdateExpression': 'SET ' + ', '.join(updates),
+        'ExpressionAttributeValues': values,
+    }
+    if names:
+        update_args['ExpressionAttributeNames'] = names
+    table.update_item(**update_args)
     return success({'message': f'User {username} updated'})
 
 

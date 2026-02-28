@@ -3,7 +3,7 @@ import uuid
 import time
 import os
 import boto3
-from db_util import get_table
+from db_util import get_table, get_s3_client
 from session_util import validate_session, require_role
 from response_util import success, error
 from boto3.dynamodb.conditions import Key
@@ -143,7 +143,7 @@ def _recursive_delete(table, folder_id):
         _recursive_delete(table, child['folderId'])
 
     # Delete files in S3
-    s3 = boto3.client('s3')
+    s3 = get_s3_client()
     bucket = os.environ['FILE_BUCKET']
     resp = s3.list_objects_v2(Bucket=bucket, Prefix=f'{folder_id}/')
     if 'Contents' in resp:

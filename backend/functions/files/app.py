@@ -3,7 +3,7 @@ import uuid
 import time
 import os
 import boto3
-from db_util import get_table
+from db_util import get_table, get_s3_client
 from session_util import validate_session, require_role
 from response_util import success, error
 from boto3.dynamodb.conditions import Key
@@ -184,7 +184,7 @@ def generate_upload_url(event):
     })
 
     # Generate pre-signed URL
-    s3 = boto3.client('s3')
+    s3 = get_s3_client()
     upload_url = s3.generate_presigned_url(
         'put_object',
         Params={
@@ -238,7 +238,7 @@ def generate_download_url(event):
     if not item:
         return error('File version not found', 404)
 
-    s3 = boto3.client('s3')
+    s3 = get_s3_client()
     download_url = s3.generate_presigned_url(
         'get_object',
         Params={'Bucket': os.environ['FILE_BUCKET'], 'Key': item['s3Key']},
